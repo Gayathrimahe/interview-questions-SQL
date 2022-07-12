@@ -1,0 +1,99 @@
+Datasets:
+
+benn.college_football_players
+benn.college_football_teams
+
+1.return player_name,school_name,conference from above datasets
+
+select player_name,school_name,conference from benn.college_football_players
+join benn.college_football_teams
+on benn.college_football_players.school_name = benn.college_football_teams.school_name
+
+
+2.query to find total number of players playing in each conference.order the output in descending order
+
+select teams.conference, 
+count(players.player_name) from benn.college_football_players as players
+join benn.college_football_teams AS teams
+on benn.college_football_players.school_name = benn.college_football_teams.school_name
+group by conference
+order by count(players.player_name) as desc
+
+3. query to write avg height of player per division
+
+select teams.division,
+avg(players.height) from benn.college_football_players AS players
+join benn.college_football_teams AS teams
+on players.school_name = teams.school_name
+group by teams.division
+
+4.query to return conference where avg(height)>200 and order by descending
+
+select teams.conference,avg(players.weight) from benn.college_football_teams AS teams
+join benn.college_football_players AS players 
+on teams.school_name = players.school_name
+group by teams.conference
+having  players.weight > 200
+order by avg(players.weight) desc
+
+
+5.query to return top 3 conference with heighest BMI (w/H) ratio
+
+
+select teams.conference, (sum(players.weight)/sum(players.height)) as BMI_Ratio
+from benn.college_football_players as players
+join benn.college_football_teams as teams
+on teams.school_name = players.school_name
+group by teams.conference
+order by BMI_Ratio desc
+limit 3
+
+
+
+6. Select random 10 records
+select * from table_name order by RAND() limit 10
+
+
+
+7.Reverse strings
+
+select reverse('customer-details-2022-09.csv')
+
+8. substring of reversed string
+
+select reverse(substring(reverse('customer-details-2022-09.csv'),13, 16))
+substring(string,start,length of string)
+select reverse(substring(reverse('customer-details-2022-09'),13, 16))
+
+
+9.Query to find out the employee details of those who were not resigned using NOT IN.
+
+select *
+from EmployeeSalary 
+where EmpId not IN 
+	(select EmpId
+	from EmployeeDetails)
+
+10.Fetch all the employees who are not working on any project.
+
+SELECT EmpId from EmployeeSalary where Project is null
+
+
+11.Write an SQL query to fetch all the Employees details from EmployeeDetails table who joined in the Year 2020.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+https://artoftesting.com/sql-queries-for-interview
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,115 @@
+Create table Emp(
+eno char(5),
+ename varchar(50),
+designation varchar(50),
+sal varchar(255),
+mgr varchar(50),
+deptno varchar(50)
+)
+alter table Emp 
+alter column sal nvarchar(255)
+
+insert into Emp values(1, 'aaa', 'salesman', 7000, 2, 10)
+insert into Emp values(2, 'bbb', 'manager', 17000, 3, 10)
+insert into Emp values(3, 'ccc', 'president', 40000, 0, 10)
+insert into Emp values(4, 'ddd', 'clerk', 5000, 5, 10)
+insert into Emp values(5, 'eee', 'manager', 20000, 3, 10)
+
+update Emp set deptno = 20 where eno = 4 or eno = 5
+update Emp set deptno = 30 where eno = 3
+update Emp set mgr = null where eno = 3
+
+Select * from Emp
+
+create table dept(
+deptno varchar(50),
+dname varchar(255),
+loc varchar(255)
+)
+
+insert into dept values(10, 'sales', 'mumbai')
+insert into dept values(20, 'hr', 'delhi')
+insert into dept values(30, 'accounts', 'chennai')
+insert into dept values(40, 'production', 'bengaluru')
+select * from dept
+
+select count(distinct designation) as designation from Emp
+select deptno, count(*) as count from Emp group by deptno
+select deptno, count(*) as count from Emp group by deptno having count(*)>= 2
+
+select count(*) from Emp where deptno = (select deptno from dept where loc = 'mumbai')
+
+
+
+select dname from dept where deptno = (select deptno from Emp where ename = 'aaa')
+
+
+select avg(sal) as average
+from Emp
+where deptno = (select deptno
+				from dept 
+				where dname ='hr');
+
+
+select count(*) as employee from Emp where deptno in (select deptno from dept where dname='sales') and sal > 10000
+
+select designation , count(designation) as noOfEmployee from Emp where deptno in (select deptno from dept where loc = 'delhi') group by designation 
+
+select designation, count(deptno) from Emp where deptno in (select deptno from dept where dname = 'sales') group by designation
+
+select designation, count(deptno)as NoOfEmp from Emp where deptno in (select deptno from dept where dname = 'sales' and sal > 10000) group by designation
+
+select designation from Emp where in (select distinct count(designation) from Emp)
+
+select distinct designation from Emp
+
+select designation ,count(deptno) from Emp group by designation order by count(*) desc;
+
+select ename 
+from Emp 
+where sal in( select max(sal) from Emp ) 
+
+
+
+
+select ename from Emp where designation in (Select designation from Emp where eno=2)
+
+select eno, ename 
+from Emp 
+where designation =(select designation 
+					from Emp
+					where eno=2) and
+					deptno in(select deptno 
+							  from dept
+							  where loc = 'delhi')
+
+select ename from Emp where designation = 'manager' and sal = (Select max(sal) from Emp where designation ='manager');
+
+select max(sal) as salary 
+from Emp 
+where sal < (
+			select max(sal) as salary 
+			from Emp);
+
+select Emp.ename, dept.loc 
+from Emp
+join dept on Emp.deptno = dept.deptno
+
+SELECT TOP 1 sal
+FROM(
+SELECT TOP 3 sal
+FROM Emp
+ORDER BY sal DESC) AS Emp
+
+
+select max(sal) from emp
+ORDER BY sal ASC;
+
+select top 5 sal from Emp
+order by sal desc
+
+select top 1 sal 
+from(select top 4 sal
+from Emp
+order by sal desc)as Emp
+order by sal asc
